@@ -1,0 +1,121 @@
+using System;
+
+// Class representing a land plot
+class LandPlot
+{
+    // Private fields
+    private double area;
+    private double initialCostPerSquareMeter;
+    private double reductionRate;
+    private double minimumLandValue;
+    private double forestValuePerSquareMeter;
+    private int numberOfHomes;
+    private double homeValue;
+
+    // Public property for numberOfHomes
+    public int NumberOfHomes
+    {
+        get { return numberOfHomes; }
+    }
+
+    // Constructor to initialize class fields
+    public LandPlot(double area, double initialCostPerSquareMeter, double reductionRate, double minimumLandValue, double forestValuePerSquareMeter)
+    {
+        this.area = area;
+        this.initialCostPerSquareMeter = initialCostPerSquareMeter;
+        this.reductionRate = reductionRate;
+        this.minimumLandValue = minimumLandValue;
+        this.forestValuePerSquareMeter = forestValuePerSquareMeter;
+    }
+
+    // Method to calculate the total value of the land plot
+    public double CalculateTotalValue()
+    {
+        double totalValue = area * initialCostPerSquareMeter; // Initial land value
+
+        // Reduce value based on distance from city border
+        double reduction = area * reductionRate;
+        totalValue -= reduction;
+
+        // Set minimum land value
+        if (totalValue < minimumLandValue * area)
+        {
+            totalValue = minimumLandValue * area;
+        }
+
+        // Increase value if there is a forest on the land plot
+        if (forestValuePerSquareMeter > 0)
+        {
+            totalValue += forestValuePerSquareMeter * area;
+        }
+
+        // Increase value if there are homes on the land plot
+        totalValue += homeValue;
+
+        return totalValue;
+    }
+
+    // Method to add homes and their value to the land plot
+    public void AddHome(double homeValue)
+    {
+        this.numberOfHomes++;
+        this.homeValue += homeValue;
+    }
+
+    // Method to add forest to the land plot
+    public void AddForest(double forestArea)
+    {
+        double forestValue = forestArea * forestValuePerSquareMeter;
+        this.area += forestArea;
+        this.forestValuePerSquareMeter += 0.10; // Increase by 0.10$ per square meter for forest
+    }
+}
+
+// Class demonstrating the usage of the LandPlot class
+class MainClass
+{
+    static void Main()
+    {
+        Console.WriteLine("Welcome to the Land Plot Valuation Program!");
+
+        // Prompt user for land area
+        Console.Write("Enter the area of the land plot in square meters: ");
+        double area = Convert.ToDouble(Console.ReadLine());
+
+        // Prompt user for distance from nearest city
+        Console.Write("Enter the distance from the nearest city border in kilometers: ");
+        double distanceFromCityBorder = Convert.ToDouble(Console.ReadLine());
+
+        // Prompt user for forest presence
+        Console.Write("Is there a forest on this land plot? (yes/no): ");
+        string forestResponse = Console.ReadLine();
+        bool hasForest = forestResponse.ToLower() == "yes";
+
+        // Prompt user for home presence
+        Console.Write("Are there homes(buildings) on this land plot? (yes/no): ");
+        string homeResponse = Console.ReadLine();
+        bool hasHomes = homeResponse.ToLower() == "yes";
+
+        int numberOfHomes = 0;
+        if (hasHomes)
+        {
+            // Prompt user for number of homes
+            Console.Write("How many homes(buildings) are on this land plot?: ");
+            numberOfHomes = Convert.ToInt32(Console.ReadLine());
+        }
+
+        // Create a land plot
+        LandPlot landPlot = new LandPlot(area, initialCostPerSquareMeter: 5.0, reductionRate: 0.01 * area, minimumLandValue: 0.10, forestValuePerSquareMeter: hasForest ? 0.10 : 0.0);
+
+        // Add homes
+        if (hasHomes)
+        {
+            landPlot.AddHome(numberOfHomes * 50000);
+        }
+
+        // Print the total value of the land plot
+        Console.WriteLine($"Total value of the land plot: ${landPlot.CalculateTotalValue()}");
+    }
+}
+
+//japarbauda parbaudi. liekas ka nonem 0.02centus par neko no m2
