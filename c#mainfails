@@ -6,30 +6,22 @@ class LandPlot
     // Private fields
     private double area;
     private double initialCostPerSquareMeter;
-    private double reductionRate;
     private double minimumLandValue;
     private double forestValuePerSquareMeter;
     private int numberOfHomes;
     private double homeValue;
 
-    // Public property for numberOfHomes
-    public int NumberOfHomes
-    {
-        get { return numberOfHomes; }
-    }
-
     // Constructor to initialize class fields
-    public LandPlot(double area, double initialCostPerSquareMeter, double reductionRate, double minimumLandValue, double forestValuePerSquareMeter)
+    public LandPlot(double area, double initialCostPerSquareMeter, double minimumLandValue, double forestValuePerSquareMeter)
     {
         this.area = area;
         this.initialCostPerSquareMeter = initialCostPerSquareMeter;
-        this.reductionRate = reductionRate;
         this.minimumLandValue = minimumLandValue;
         this.forestValuePerSquareMeter = forestValuePerSquareMeter;
     }
 
     // Method to calculate the total value of the land plot
-    public double CalculateTotalValue()
+    public double CalculateTotalValue(double reductionRate)
     {
         double totalValue = area * initialCostPerSquareMeter; // Initial land value
 
@@ -86,6 +78,9 @@ class MainClass
         Console.Write("Enter the distance from the nearest city border in kilometers: ");
         double distanceFromCityBorder = Convert.ToDouble(Console.ReadLine());
 
+        // Calculate reduction rate based on the distance from the city border
+        double reductionRate = Math.Min(distanceFromCityBorder * 0.01, 0.10);
+
         // Prompt user for forest presence
         Console.Write("Is there a forest on this land plot? (yes/no): ");
         string forestResponse = Console.ReadLine();
@@ -96,26 +91,22 @@ class MainClass
         string homeResponse = Console.ReadLine();
         bool hasHomes = homeResponse.ToLower() == "yes";
 
-        int numberOfHomes = 0;
+        double homeValue = 0;
         if (hasHomes)
         {
             // Prompt user for number of homes
             Console.Write("How many homes(buildings) are on this land plot?: ");
-            numberOfHomes = Convert.ToInt32(Console.ReadLine());
+            int numberOfHomes = Convert.ToInt32(Console.ReadLine());
+            homeValue = numberOfHomes * 50000;
         }
 
         // Create a land plot
-        LandPlot landPlot = new LandPlot(area, initialCostPerSquareMeter: 5.0, reductionRate: 0.01 * area, minimumLandValue: 0.10, forestValuePerSquareMeter: hasForest ? 0.10 : 0.0);
+        LandPlot landPlot = new LandPlot(area, initialCostPerSquareMeter: 5.0, minimumLandValue: 0.10, forestValuePerSquareMeter: hasForest ? 0.10 : 0.0);
 
         // Add homes
-        if (hasHomes)
-        {
-            landPlot.AddHome(numberOfHomes * 50000);
-        }
+        landPlot.AddHome(homeValue);
 
         // Print the total value of the land plot
-        Console.WriteLine($"Total value of the land plot: ${landPlot.CalculateTotalValue()}");
+        Console.WriteLine($"Total value of the land plot: ${landPlot.CalculateTotalValue(reductionRate)}");
     }
 }
-
-//japarbauda parbaudi. liekas ka nonem 0.02centus par neko no m2
