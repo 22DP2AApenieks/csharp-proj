@@ -1,8 +1,5 @@
 using System;
 
-/*Izstrādāt klasi(main0, kas demonstrē izstrādātās klases(piemēram landplot) izmnatošanu; Klasē jābūt konstruktoram, kas inicializē klases datu laukus; Pamato konstroktora parametru nepieciešamīb(ar komentāriem); Visiem datu klaukiem jābūt pieejamiem tikai, izmn\antojot metodes vai īpašumus(iekapsulēšana0; Izstrādāt vismaz 3 metodes, kas realizē kādu darbību(var izmantot ar;i piekļuves  modifikātoru static; Nepieciešams veikt arī izveidota eksemplāra daudzumu\a uzskaiti; Kodu komentāt; 
-*/
-
 // Klase, kas pārstāv zemes gabalu
 class LandPlot
 {
@@ -21,6 +18,11 @@ class LandPlot
         this.initialCostPerSquareMeter = initialCostPerSquareMeter; // Piešķir sākotnējo cenu par kvadrātmetru
         this.minimumLandValue = minimumLandValue; // Piešķir minimālo zemes vērtību
         this.forestValuePerSquareMeter = forestValuePerSquareMeter; // Piešķir meža vērtību par kvadrātmetru
+        
+        /*"this" tiek izmantots, lai atsauktos uz pašreizējo objektu, tas ir, uz objektu, kurā pašlaik tiek izpildīta metode vai konstruktors.
+        Šajā gadījumā, izmantojot "this", mēs norādām, ka vēlamies piekļūt konkrētajiem klases datu laukiem, nevis vienkārši izmantot tos pašus nosaukumus.*/
+        
+        //Iekapsulēšana veidojas jo neļaujam tiešu piekļuvi privātajam datu laukam "numberOfHomes", bet jūs ļaujat mainīt to, izmantojot metodi "AddHome".
     }
 
     // Metode, lai aprēķinātu zemes gabala kopējo vērtību
