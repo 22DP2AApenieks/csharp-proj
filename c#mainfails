@@ -1,112 +1,115 @@
 using System;
 
-// Class representing a land plot
+// Klase, kas pārstāv zemes gabalu
 class LandPlot
 {
-    // Private fields
-    private double area;
-    private double initialCostPerSquareMeter;
-    private double minimumLandValue;
-    private double forestValuePerSquareMeter;
-    private int numberOfHomes;
-    private double homeValue;
+    // Privātie lauki
+    private double area; // Platība
+    private double initialCostPerSquareMeter; // Sākotnējā cena par kvadrātmetru
+    private double minimumLandValue; // Minimālā zemes vērtība
+    private double forestValuePerSquareMeter; // Meža vērtība par kvadrātmetru
+    private int numberOfHomes; // Māju skaits
+    private double homeValue; // Mājas vērtība
 
-    // Constructor to initialize class fields
+    // Konstruktors, lai inicializētu klases laukus
     public LandPlot(double area, double initialCostPerSquareMeter, double minimumLandValue, double forestValuePerSquareMeter)
     {
-        this.area = area;
-        this.initialCostPerSquareMeter = initialCostPerSquareMeter;
-        this.minimumLandValue = minimumLandValue;
-        this.forestValuePerSquareMeter = forestValuePerSquareMeter;
+        this.area = area; // Piešķir platības vērtību
+        this.initialCostPerSquareMeter = initialCostPerSquareMeter; // Piešķir sākotnējo cenu par kvadrātmetru
+        this.minimumLandValue = minimumLandValue; // Piešķir minimālo zemes vērtību
+        this.forestValuePerSquareMeter = forestValuePerSquareMeter; // Piešķir meža vērtību par kvadrātmetru
     }
 
-    // Method to calculate the total value of the land plot
+    // Metode, lai aprēķinātu zemes gabala kopējo vērtību
     public double CalculateTotalValue(double reductionRate)
     {
-        double totalValue = area * initialCostPerSquareMeter; // Initial land value
+        double totalValue = area * initialCostPerSquareMeter; // Sākotnējā zemes vērtība
 
-        // Reduce value based on distance from city border
+        // Samazina vērtību, pamatojoties uz attālumu no pilsētas robežas
         double reduction = area * reductionRate;
         totalValue -= reduction;
 
-        // Set minimum land value
+        // Iestata minimālo zemes vērtību
         if (totalValue < minimumLandValue * area)
         {
             totalValue = minimumLandValue * area;
         }
 
-        // Increase value if there is a forest on the land plot
+        // Palielina vērtību, ja uz zemes gabala ir mežs
         if (forestValuePerSquareMeter > 0)
         {
             totalValue += forestValuePerSquareMeter * area;
         }
 
-        // Increase value if there are homes on the land plot
+        // Palielina vērtību, ja uz zemes gabala ir mājas
         totalValue += homeValue;
 
         return totalValue;
     }
 
-    // Method to add homes and their value to the land plot
+    // Metode, lai pievienotu mājas un to vērtību zemes gabalam
     public void AddHome(double homeValue)
     {
-        this.numberOfHomes++;
-        this.homeValue += homeValue;
+        this.numberOfHomes++; // Palielina māju skaitu
+        this.homeValue += homeValue; // Pievieno mājas vērtību
     }
 
-    // Method to add forest to the land plot
+    // Metode, lai pievienotu mežu zemes gabalam
     public void AddForest(double forestArea)
     {
         double forestValue = forestArea * forestValuePerSquareMeter;
-        this.area += forestArea;
-        this.forestValuePerSquareMeter += 0.10; // Increase by 0.10$ per square meter for forest
+        this.area += forestArea; // Pievieno meža platību kopējai zemes platībai
+        this.forestValuePerSquareMeter += 0.10; // Palielina meža vērtību par 0.10$ par kvadrātmetru
     }
 }
 
-// Class demonstrating the usage of the LandPlot class
+// Klase, kas demonstrē LandPlot klases izmantošanu
 class MainClass
 {
     static void Main()
     {
-        Console.WriteLine("Welcome to the Land Plot Valuation Program!");
+        Console.WriteLine("Laipni lūgti Zemes gabalu novērtēšanas programmā!");
 
-        // Prompt user for land area
-        Console.Write("Enter the area of the land plot in square meters: ");
+        // Lietotājam jāievada zemes platība
+        Console.Write("Ievadiet zemes gabala platību kvadrātmetros: ");
         double area = Convert.ToDouble(Console.ReadLine());
 
-        // Prompt user for distance from nearest city
-        Console.Write("Enter the distance from the nearest city border in kilometers: ");
+        // Lietotājam jāievada attālums no tuvākās pilsētas
+        Console.Write("Ievadiet attālumu no tuvākās pilsētas robežas kilometros: ");
         double distanceFromCityBorder = Convert.ToDouble(Console.ReadLine());
 
-        // Calculate reduction rate based on the distance from the city border
-        double reductionRate = Math.Min(distanceFromCityBorder * 0.01, 0.10);
+        // Aprēķina samazinājuma likmi, pamatojoties uz attālumu no pilsētas robežas
+        double reductionRate = Math.Min(distanceFromCityBorder * 0.01, 1);
+        // Samazinājuma likmes aprēķins, pamatojoties uz attālumu no pilsētas robežas.
+        // Izmantojot `Math.Min`, izvēlamies mazāko vērtību starp attālumu no pilsētas robežas * 0.01
+        // un 0.10. Tas nodrošina, ka samazinājuma likme nekad nepārsniedz 1 (20%).
 
-        // Prompt user for forest presence
-        Console.Write("Is there a forest on this land plot? (yes/no): ");
+        // Lietotājam jānorāda, vai uz zemes gabala ir mežs
+        Console.Write("Vai uz šī zemes gabala ir mežs? (ja/ne): ");
         string forestResponse = Console.ReadLine();
-        bool hasForest = forestResponse.ToLower() == "yes";
+        bool hasForest = forestResponse.ToLower() == "ja";
 
-        // Prompt user for home presence
-        Console.Write("Are there homes(buildings) on this land plot? (yes/no): ");
+        // Lietotājam jānorāda, vai uz zemes gabala ir mājas
+        Console.Write("Vai uz šī zemes gabala ir mājas? (ja/ne): ");
         string homeResponse = Console.ReadLine();
-        bool hasHomes = homeResponse.ToLower() == "yes";
+        bool hasHomes = homeResponse.ToLower() == "ja";
 
         double homeValue = 0;
         if (hasHomes)
         {
-            // Prompt user for number of homes
-            Console.Write("How many homes(buildings) are on this land plot?: ");
+            // Lietotājam jānorāda māju skaits
+            Console.Write("Cik mājas ir uz šī zemes gabala?: ");
             int numberOfHomes = Convert.ToInt32(Console.ReadLine());
             homeValue = numberOfHomes * 50000;
         }
 
-        // Create a land plot
+        // Izveido zemes gabalu
         LandPlot landPlot = new LandPlot(area, initialCostPerSquareMeter: 5.0, minimumLandValue: 0.10, forestValuePerSquareMeter: hasForest ? 0.10 : 0.0);
 
-        // Add homes
+        // Pievieno mājas
         landPlot.AddHome(homeValue);
 
-        // Print the total value of the land plot
-        Console.WriteLine($"Total value of the land plot: ${landPlot.CalculateTotalValue(reductionRate)}");
+        // Izdrukā zemes gabala kopējo vērtību
+        Console.WriteLine($"Kopējā zemes gabala vērtība: ${landPlot.CalculateTotalValue(reductionRate)}");
     }
 }
