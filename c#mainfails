@@ -1,5 +1,8 @@
 using System;
 
+/*Izstrādāt klasi(main0, kas demonstrē izstrādātās klases(piemēram landplot) izmnatošanu; Klasē jābūt konstruktoram, kas inicializē klases datu laukus; Pamato konstroktora parametru nepieciešamīb(ar komentāriem); Visiem datu klaukiem jābūt pieejamiem tikai, izmn\antojot metodes vai īpašumus(iekapsulēšana0; Izstrādāt vismaz 3 metodes, kas realizē kādu darbību(var izmantot ar;i piekļuves  modifikātoru static; Nepieciešams veikt arī izveidota eksemplāra daudzumu\a uzskaiti; Kodu komentāt; 
+*/
+
 // Klase, kas pārstāv zemes gabalu
 class LandPlot
 {
