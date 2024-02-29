@@ -51,7 +51,6 @@ class LandPlot
     public void AddForest(double forestArea)
     {
         double forestValue = forestArea * forestValuePerSquareMeter;
-        this.area += forestArea; // Pievieno meža platību kopējai zemes platībai
         this.forestValuePerSquareMeter += 0.10; // Palielina meža vērtību par 0.10$ par kvadrātmetru
     }
 }
@@ -72,7 +71,7 @@ class MainClass
         double distanceFromCityBorder = Convert.ToDouble(Console.ReadLine());
 
         // Aprēķina samazinājuma likmi, pamatojoties uz attālumu no pilsētas robežas
-        double reductionRate = Math.Min(distanceFromCityBorder * 0.01, 3);
+        double reductionRate = Math.Min(distanceFromCityBorder * 0.01, 3); //Math.min ir lai varētu parādīt pašu lielāko vērtību ar ko var samazināt(3)
         // Samazinājuma likmes aprēķins, pamatojoties uz attālumu no pilsētas robežas.
         // Izmantojot `Math.Min`, izvēlamies mazāko vērtību starp attālumu no pilsētas robežas * 0.01
         // ", 1" Tas nodrošina, ka samazinājuma likme nekad nepārsniedz 3 (60%).
@@ -80,7 +79,7 @@ class MainClass
         // Lietotājam jānorāda, vai uz zemes gabala ir mežs
         Console.Write("Vai uz šī zemes gabala ir mežs? (ja/ne): ");
         string forestResponse = Console.ReadLine();
-        bool hasForest = forestResponse.ToLower() == "ja";
+        bool hasForest = forestResponse.ToLower() == "ja";// pēc šī izpildas 99 linija, kas norada ka fprestvaluepersq ir vainu jā(0.10) vai nē(0) un pectam izpildas 32 linija
 
         // Lietotājam jānorāda, vai uz zemes gabala ir mājas
         Console.Write("Vai uz šī zemes gabala ir mājas? (ja/ne): ");
@@ -97,7 +96,7 @@ class MainClass
         }
 
         // Izveido zemes gabalu
-        LandPlot landPlot = new LandPlot(area, initialCostPerSquareMeter: 5.0, forestValuePerSquareMeter: hasForest ? 0.10 : 0.0);
+        LandPlot landPlot = new LandPlot(area, initialCostPerSquareMeter: 5.0, forestValuePerSquareMeter: hasForest ? 0.10 : 0.0); //hasForest = bool kas piešķirs vertibu forvalpersq
 
         // Pievieno mājas
         landPlot.AddHome(homeValue);
