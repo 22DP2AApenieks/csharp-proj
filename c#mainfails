@@ -6,23 +6,17 @@ class LandPlot
     // Privātie lauki
     private double area; // Platība
     private double initialCostPerSquareMeter; // Sākotnējā cena par kvadrātmetru
-    private double minimumLandValue; // Minimālā zemes vērtība
     private double forestValuePerSquareMeter; // Meža vērtība par kvadrātmetru
     private int numberOfHomes; // Māju skaits
     private double homeValue; // Mājas vērtība
 
     // Konstruktors, lai inicializētu klases laukus
-    public LandPlot(double area, double initialCostPerSquareMeter, double minimumLandValue, double forestValuePerSquareMeter)
+    public LandPlot(double area, double initialCostPerSquareMeter, double forestValuePerSquareMeter)
+    //šis var piekļūt privātajiem mainigajiem - iekapsulēšana
     {
-        this.area = area; // Piešķir platības vērtību
+        this.area = area; // Piešķir platības vērtību Dēvēts arī par konstroktoru
         this.initialCostPerSquareMeter = initialCostPerSquareMeter; // Piešķir sākotnējo cenu par kvadrātmetru
-        this.minimumLandValue = minimumLandValue; // Piešķir minimālo zemes vērtību
         this.forestValuePerSquareMeter = forestValuePerSquareMeter; // Piešķir meža vērtību par kvadrātmetru
-        
-        /*"this" tiek izmantots, lai atsauktos uz pašreizējo objektu, tas ir, uz objektu, kurā pašlaik tiek izpildīta metode vai konstruktors.
-        Šajā gadījumā, izmantojot "this", mēs norādām, ka vēlamies piekļūt konkrētajiem klases datu laukiem, nevis vienkārši izmantot tos pašus nosaukumus.*/
-        
-        //Iekapsulēšana veidojas jo neļaujam tiešu piekļuvi privātajam datu laukam "numberOfHomes", bet jūs ļaujat mainīt to, izmantojot metodi "AddHome".
     }
 
     // Metode, lai aprēķinātu zemes gabala kopējo vērtību
@@ -33,12 +27,6 @@ class LandPlot
         // Samazina vērtību, pamatojoties uz attālumu no pilsētas robežas
         double reduction = area * reductionRate;
         totalValue -= reduction;
-
-        // Iestata minimālo zemes vērtību
-        if (totalValue < minimumLandValue * area)
-        {
-            totalValue = minimumLandValue * area;
-        }
 
         // Palielina vērtību, ja uz zemes gabala ir mežs
         if (forestValuePerSquareMeter > 0)
@@ -71,7 +59,7 @@ class LandPlot
 // Klase, kas demonstrē LandPlot klases izmantošanu
 class MainClass
 {
-    static void Main()
+    static void Main()//Static-metode,kura neizmanto fildus no klases
     {
         Console.WriteLine("Laipni lūgti Zemes gabalu novērtēšanas programmā!");
 
@@ -84,10 +72,10 @@ class MainClass
         double distanceFromCityBorder = Convert.ToDouble(Console.ReadLine());
 
         // Aprēķina samazinājuma likmi, pamatojoties uz attālumu no pilsētas robežas
-        double reductionRate = Math.Min(distanceFromCityBorder * 0.01, 1);
+        double reductionRate = Math.Min(distanceFromCityBorder * 0.01, 3);
         // Samazinājuma likmes aprēķins, pamatojoties uz attālumu no pilsētas robežas.
         // Izmantojot `Math.Min`, izvēlamies mazāko vērtību starp attālumu no pilsētas robežas * 0.01
-        // un 0.10. Tas nodrošina, ka samazinājuma likme nekad nepārsniedz 1 (20%).
+        // ", 1" Tas nodrošina, ka samazinājuma likme nekad nepārsniedz 3 (60%).
 
         // Lietotājam jānorāda, vai uz zemes gabala ir mežs
         Console.Write("Vai uz šī zemes gabala ir mežs? (ja/ne): ");
@@ -109,7 +97,7 @@ class MainClass
         }
 
         // Izveido zemes gabalu
-        LandPlot landPlot = new LandPlot(area, initialCostPerSquareMeter: 5.0, minimumLandValue: 0.10, forestValuePerSquareMeter: hasForest ? 0.10 : 0.0);
+        LandPlot landPlot = new LandPlot(area, initialCostPerSquareMeter: 5.0, forestValuePerSquareMeter: hasForest ? 0.10 : 0.0);
 
         // Pievieno mājas
         landPlot.AddHome(homeValue);
